@@ -25,8 +25,8 @@ const projects = [
     description: "A personal portfolio website showcasing my projects and skills, built with ReactJS and Tailwind CSS.",
     Image: "/projects/portofolio.png",
     tags: ["ReactJS", "TailwindCSS", "JavaScript"],
-    demoURL: "#",
-    githubURL: "#"
+    demoURL: "#hero",
+    githubURL: "https://github.com/goran03/Portofolio"
   }  
 ]
 
