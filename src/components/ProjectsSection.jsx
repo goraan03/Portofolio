@@ -26,7 +26,7 @@ const projects = [
     Image: "/projects/portofolio.png",
     tags: ["ReactJS", "TailwindCSS", "JavaScript"],
     demoURL: "#hero",
-    githubURL: "https://github.com/goran03/Portofolio"
+    githubURL: "https://github.com/goraan03/Portofolio"
   }  
 ]
 
