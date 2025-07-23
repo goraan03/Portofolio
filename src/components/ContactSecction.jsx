@@ -2,8 +2,17 @@ import { Facebook, Instagram, Linkedin, Mail, MapPin, Phone, Send } from "lucide
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
+import emailjs from 'emailjs-com';
 
 export const ContactSection = () => {
+    const [formData, setFormData] = useState({
+        name: "",
+        email: "",
+        message: "",
+    });
+    const SERVICE_ID = "service_gcwe4lb";
+    const TEMPLATE_ID = "template_omqh488";
+    const PUBLIC_KEY = "Atgkbi2glHokAv29l";
 
     const {toast} = useToast();
     const [isSubmiting, setIsSubmitting] = useState(false);
@@ -11,16 +20,20 @@ export const ContactSection = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        setIsSubmitting(true);
+        emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, e.target, PUBLIC_KEY).then((result) => {
+            setIsSubmitting(true);
 
-        setTimeout(() => {
+            setTimeout(() => {
             toast({
-                title: "Message Sent",
-                description: "Thank you for reaching out! I'll get back to you as soon as possible.",
-                duration: 3000,
+                title: "Message sent!",
+                description: "Thank you for your message. I'll get back to you soon.",
             });
             setIsSubmitting(false);
-        }, 1500);
+            }, 1500);
+        }).catch((error) => {
+            console.error("Greška prilikom slanja:", error);
+            alert("Greška prilikom slanja poruke.");
+        });
         
     }
     return <section id="contact" className="py-24 px-4 relative bg-secondary/30">
@@ -44,7 +57,7 @@ export const ContactSection = () => {
                             </div>
                             <div>
                                 <h4 className="font-medium"> Email</h4>
-                                <a href="mailto:gorangrcic72@gmail.com" className="text-muted-foreground hover:text-primary transsition-colors">gorangrcic72@gmail.com</a>
+                                <a href="mailto:contact@gorangrcic.it.com" className="text-muted-foreground hover:text-primary transsition-colors">contact@gorangrcic.it.com</a>
                             </div>
                         </div>
                         
@@ -84,18 +97,21 @@ export const ContactSection = () => {
                         </div>
                     </div>
                 </div>
-                <div className="bg-card p-8 rounded-lg shadow-xs" onSubmit={handleSubmit}>
+                <div className="bg-card p-8 rounded-lg shadow-xs">
                     <h3 className="text-2xl font-semibold mb-6"> Send a Message</h3>
-                    <form className="space-y-6">
+                    <form className="space-y-6" onSubmit={handleSubmit}>
                         <div>
                             <label htmlFor="name" className="block text-sm font-medium mb-2"> Your Name </label>
                             <input 
                             type="text" 
                             id="name" 
-                            name="name" 
+                            name="from_name" 
                             required 
+                            value={formData.name}
                             className="w-full px-4 py-3 rounded-md border border-input bg-background focus:outline-hidden foucs:ring-2 focus:ring-primary"
-                            placeholder="Your Name..."/>
+                            placeholder="Your Name..."
+                            onChange={(e) => setFormData({...formData, name: e.target.value})}/>
+                            
                         </div>
 
                         <div>
@@ -103,20 +119,24 @@ export const ContactSection = () => {
                             <input 
                             type="email" 
                             id="email" 
-                            name="email" 
+                            name="reply_to" 
                             required 
+                            value={formData.email}
                             className="w-full px-4 py-3 rounded-md border border-input bg-background focus:outline-hidden foucs:ring-2 focus:ring-primary"
-                            placeholder="someone@gmail.com"/>
+                            placeholder="someone@gmail.com"
+                            onChange={(e) => setFormData({...formData, email: e.target.value})}/>
                         </div>
 
                         <div>
                             <label htmlFor="message" className="block text-sm font-medium mb-2"> Your Message </label>
                             <textarea 
                             id="message" 
-                            name="name" 
+                            name="message" 
                             required 
+                            value={formData.message}
                             className="w-full px-4 py-3 rounded-md border border-input bg-background focus:outline-hidden foucs:ring-2 focus:ring-primary resize-none"
-                            placeholder="Hello, I'd like to talk about..."/>
+                            placeholder="Hello, I'd like to talk about..."
+                            onChange={(e) => setFormData({...formData, message: e.target.value})}/>
                         </div>
                         <button 
                         type="submit" 
